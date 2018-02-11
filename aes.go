@@ -32,7 +32,7 @@ func NewAesCBCCrypter(key []byte, iv []byte) (*AesCBCCrypter, error) {
 		return nil, errors.New("The length of iv must be the same as the Block's block size " + strconv.Itoa(blockSize))
 	}
 
-	this := &AesCBCCrypter{
+	a := &AesCBCCrypter{
 		blockSize: blockSize,
 
 		encryptBlockMode: cipher.NewCBCEncrypter(block, iv),
@@ -43,29 +43,29 @@ func NewAesCBCCrypter(key []byte, iv []byte) (*AesCBCCrypter, error) {
 		},
 	}
 
-	return this, nil
+	return a, nil
 }
 
-func (this *AesCBCCrypter) BlockSize() int {
-	return this.blockSize
+func (a *AesCBCCrypter) BlockSize() int {
+	return a.blockSize
 }
 
-func (this *AesCBCCrypter) SetPadding(padding PaddingInterface) {
-	this.padding = padding
+func (a *AesCBCCrypter) SetPadding(padding PaddingInterface) {
+	a.padding = padding
 }
 
-func (this *AesCBCCrypter) Encrypt(data []byte) []byte {
-	data = this.padding.Padding(data)
+func (a *AesCBCCrypter) Encrypt(data []byte) []byte {
+	data = a.padding.Padding(data)
 
 	crypted := make([]byte, len(data))
-	this.encryptBlockMode.CryptBlocks(crypted, data)
+	a.encryptBlockMode.CryptBlocks(crypted, data)
 
 	return crypted
 }
 
-func (this *AesCBCCrypter) Decrypt(crypted []byte) []byte {
+func (a *AesCBCCrypter) Decrypt(crypted []byte) []byte {
 	data := make([]byte, len(crypted))
-	this.decryptBlockMode.CryptBlocks(data, crypted)
+	a.decryptBlockMode.CryptBlocks(data, crypted)
 
-	return this.padding.UnPadding(data)
+	return a.padding.UnPadding(data)
 }
