@@ -11,7 +11,16 @@ func Md5String(data []byte) string {
 	return fmt.Sprintf("%x", md5.Sum(data))
 }
 
-func Md5File(path string) (string, error) {
+func Md5File(file io.Reader) (string, error) {
+	h := md5.New()
+	if _, err := io.Copy(h, file); err != nil {
+		return "", err
+	}
+
+	return fmt.Sprintf("%x", h.Sum(nil)), nil
+}
+
+func Md5FileByPath(path string) (string, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return "", err
@@ -20,10 +29,5 @@ func Md5File(path string) (string, error) {
 		_ = f.Close()
 	}()
 
-	h := md5.New()
-	if _, err := io.Copy(h, f); err != nil {
-		return "", err
-	}
-
-	return fmt.Sprintf("%x", h.Sum(nil)), nil
+	return Md5File(f)
 }

@@ -14,7 +14,7 @@ func TestMd5String(t *testing.T) {
 }
 
 func TestMd5File(t *testing.T) {
-	md5, err := Md5File("/home/ligang/devspace/goinbox/crypto/md5.go")
+	md5, err := Md5FileByPath("/home/ligang/devspace/goinbox/crypto/md5.go")
 	if err != nil {
 		t.Error(err)
 	}
