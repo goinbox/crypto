@@ -2,6 +2,9 @@ package crypto
 
 import (
 	"crypto/md5"
+	"crypto/sha1"
+	"crypto/sha256"
+
 	"fmt"
 	"io"
 	"os"
@@ -30,4 +33,12 @@ func Md5FileByPath(path string) (string, error) {
 	}()
 
 	return Md5File(f)
+}
+
+func Sha1String(data []byte) string {
+	return fmt.Sprintf("%x", sha1.Sum(data))
+}
+
+func Sha256String(data []byte) string {
+	return fmt.Sprintf("%x", sha256.Sum256(data))
 }
